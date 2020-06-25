@@ -1,0 +1,13 @@
+#Package-lock de npm
+package-lock.json
+
+#Modulos de node
+node_modules/
+
+#Logs
+logs/
+
+#Mocks
+mocks/
+
+.env
