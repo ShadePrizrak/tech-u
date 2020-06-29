@@ -1,18 +1,30 @@
 const mongoose = require('mongoose');
+let uniqueVal = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
 
 let userSchema = new Schema({
-    personal_id_type:{
-        type: String
+    password:{
+        type: String,
+        required: [true, 'Campo personal_id_type es obligatorio']
     },
-    personal_id:{
-        type: String
-    },
-    first_name:{
-        type:String
-    },
-    last_name:{
-        type:String
+    customer:{
+        type: Schema.Types.ObjectId,
+        ref: 'Customer',
+        unique: true
     }
 
 })
+
+userSchema.plugin(uniqueVal, {
+    message: 'El {PATH} debe ser único'
+});
+
+userSchema.methods.toJSON = function() {
+    let Aux = this;
+    let AuxObjeto = Aux.toObject();
+    delete AuxObjeto.password;
+
+    return AuxObjeto;
+}
+
+module.exports = mongoose.model('User', userSchema);

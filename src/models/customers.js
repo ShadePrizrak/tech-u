@@ -47,9 +47,6 @@ let CustomerSchema = new Schema({
         min: [900000000, 'Campo phone_number debe tener una longitud de 9'],
         max: [999999999, 'Campo phone_number debe tener una longitud de 9'],
         required: [true, 'Campo phone_number es obligatorio']
-    },
-    password:{
-        type: String
     }
 
 })

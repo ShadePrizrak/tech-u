@@ -23,7 +23,7 @@ const log4j = require('log4js')
                 compress: true,
                 layout: {
                     type: 'pattern',
-                    pattern: '[%d][%p][%c][%m]'
+                    pattern: '[%d][%p][%c][%X{Cliente}][%m]'
                 }
             },            
             request_logger: {
@@ -64,7 +64,7 @@ const log4j = require('log4js')
 //Defición de variables globales
 global.PROPERTIES = argv.args.environment === 'dev' ? require(path.resolve(__dirname, './dev.json')) : require(path.resolve(__dirname, './prod.json'));
 global.LOGGER = log4j;
-global.CONTEXT = '/api-techu-back'
+global.CONTEXT = '/api-techu-back';
 /**
  *
  *  Cargamos variables que seran utilizadas en el entorno
