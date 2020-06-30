@@ -41,7 +41,7 @@ mongoose.connect(
         };
 
         Logger.info('Base de datos ONLINE');
-
+        console.log(process.env.PORT);
         app.listen(process.env.PORT, () => {
             Logger.info(`Escuchando desde el puerto ${process.env.PORT}`);
         });
