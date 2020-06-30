@@ -21,11 +21,9 @@ Para el correcto funcionamiento de la aplicación se necesita que el servidor qu
 
 ## Recursos
 
-### GET
+### *Users*
 
-* 
-
-### POST
+##### POST
 
 * /users : Petición que permite el registro de un *cliente* , mediante su registro en la colección **usuarios** y la creación de una contraseña, utilizando el PIN y PAN del *tarjeta* del *cliente*.
 

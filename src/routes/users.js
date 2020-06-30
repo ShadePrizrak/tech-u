@@ -5,6 +5,7 @@
 const express = require('express');
 const router = express.Router();
 const { interceptarRequest } = require('../middlewares/interceptor');
+const { validate_jwt } = require('../middlewares/authentication');
 const bcrypt = require('bcrypt');
 const logger_error_enum = require('../models/enums/logger');
 
@@ -18,29 +19,6 @@ let is = 'routes/users';
 const Logger = LOGGER.getLogger(is);
 
 router.use(interceptarRequest);
-
-router.get('/', (req, res) => {
-
-    console.log(req.body.hola);
-    Logger.info(`Mensaje`);
-
-    return res
-        .status(200)
-        .json({
-            message: 'correcto'
-        })
-});
-
-router.get('/:idCliente', (req, res) => {
-
-    Logger.info(`Mensaje`);
-
-    return res
-        .status(200)
-        .json({
-            message: 'correcto'
-        })
-});
 
 /**
  * Method : POST
@@ -96,7 +74,8 @@ router.post('/', (req, res) => {
 
             Logger.addContext('Cliente', customerId);
 
-            UserSchema.findById(customerId, (error, userDb) => {
+            Logger.info('Consultando coleccion Users');
+            UserSchema.findOne({ "customer": customerId }, (error, userDb) => {
                 if (error) {
                     Logger.error(logger_error_enum.errors.E_TRANSAC_DB.message, error);
                     return res.status(500).json({
@@ -105,6 +84,7 @@ router.post('/', (req, res) => {
                     });
                 };
 
+                Logger.info('Respuesta obtenida', userDb);
                 if (userDb) {
                     Logger.error("El usuario ya se encuentra registrado");
                     return res.status(409).json({
@@ -204,9 +184,9 @@ router.put('/', (req, res) => {
                         { password: bcrypt.hashSync(password, 10) },
                         { useFindAndModify: false, upsert: false })
                     .populate({
-                        path:'customer',
+                        path: 'customer',
                         select: '_id personal_id_type personal_id first_name last_name gender birth_date email phone_number',
-                        model:'Customer'
+                        model: 'Customer'
                     })
                     .exec((error, userDbAux) => {
                         if (error) {

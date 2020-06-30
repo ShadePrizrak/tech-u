@@ -7,7 +7,7 @@ let {
     card_type_enum
 } = require('./enums/enums');
 
-let AccountsSchema = new Schema({
+let CardsSchema = new Schema({
     card_number: {
         type: String,
         required: [true, 'Campo card_number es obligatorio'],
@@ -36,9 +36,17 @@ let AccountsSchema = new Schema({
     }
 })
 
+CardsSchema.methods.toJSON = function() {
+    let Aux = this;
+    let AuxObjeto = Aux.toObject();
+    let card_number = AuxObjeto.card_number
+    AuxObjeto.card_number = `**${card_number.substring(card_number.substring)}`
 
-AccountsSchema.plugin(uniqueVal, {
+    return AuxObjeto;
+}
+
+CardsSchema.plugin(uniqueVal, {
     message: 'El {PATH} debe ser único'
 });
 
-module.exports = mongoose.model('Cards', AccountsSchema);
+module.exports = mongoose.model('Cards', CardsSchema);

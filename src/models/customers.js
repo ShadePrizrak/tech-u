@@ -47,7 +47,9 @@ let CustomerSchema = new Schema({
         min: [900000000, 'Campo phone_number debe tener una longitud de 9'],
         max: [999999999, 'Campo phone_number debe tener una longitud de 9'],
         required: [true, 'Campo phone_number es obligatorio']
-    }
+    },
+    accounts: [{ type: Schema.Types.ObjectId, ref: 'Accounts' }],
+    cards: [{ type: Schema.Types.ObjectId, ref: 'Cards' }]
 
 })
 
