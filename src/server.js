@@ -6,7 +6,9 @@ const bodyParser = require('body-parser');
 
 //Importamos la configuracion del servidor´
 require(path.resolve(__dirname, './configs/config'));
-require('dotenv').config(path.resolve(__dirname, '../.env'));
+if (PROPERTIES.environment == 'dev') {
+    require('dotenv').config(path.resolve(__dirname, '../.env'));
+}
 
 //Creación del objeto app
 const app = express();
