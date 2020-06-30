@@ -10,6 +10,14 @@ El objetivo del presente proyecto es el desarrollo de un aplicativo web para una
 2. Actualización de contraseña de usuario
 3. 
 
+## Variables entorno
+Para el correcto funcionamiento de la aplicación se necesita que el servidor que corre la aplicación tenga configurada las siguientes variables.
+
+* DB_HOST
+* DB_NAME
+* DB_USER
+* DB_PASS
+* SEED_JWT
 
 ## Recursos
 

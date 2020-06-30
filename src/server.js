@@ -24,6 +24,7 @@ let generarUriMongodb = function () {
 
 //Importamos las rutas
 app.use(`${CONTEXT}/users`, require('./routes/users'));
+app.use(`${CONTEXT}/auth`, require('./routes/auth'));
 
 //Inicio de la aplicación
 mongoose.connect(

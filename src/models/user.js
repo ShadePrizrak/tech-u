@@ -5,11 +5,13 @@ const Schema = mongoose.Schema;
 let userSchema = new Schema({
     password:{
         type: String,
-        required: [true, 'Campo personal_id_type es obligatorio']
+        required: [true, 'Campo personal_id_type es obligatorio'],
+        unique: true
     },
     customer:{
         type: Schema.Types.ObjectId,
         ref: 'Customer',
+        required: [true, 'Campo Customer es obligatorio'],
         unique: true
     }
 

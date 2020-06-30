@@ -198,22 +198,32 @@ router.put('/', (req, res) => {
                     });
                 }
 
-                UserSchema.findByIdAndUpdate(userDb._id, { password: bcrypt.hashSync(password, 10) }, (error, userDbAux) => {
-                    if (error) {
-                        Logger.error(logger_error_enum.errors.E_TRANSAC_DB.message, error);
-                        return res.status(500).json({
-                            state: 'error',
-                            error: logger_error_enum.errors.E_TRANSAC_DB
-                        });
-                    }
-                    Logger.info("Se ha actualizado exitosamente la contraseña del usuario");
-                    return res.status(200).json({
-                        state: 'success',
-                        data: {
-                            user: userDbAux
+                UserSchema
+                    .findOneAndUpdate(
+                        { "_id": userDb._id },
+                        { password: bcrypt.hashSync(password, 10) },
+                        { useFindAndModify: false, upsert: false })
+                    .populate({
+                        path:'customer',
+                        select: '_id personal_id_type personal_id first_name last_name gender birth_date email phone_number',
+                        model:'Customer'
+                    })
+                    .exec((error, userDbAux) => {
+                        if (error) {
+                            Logger.error(logger_error_enum.errors.E_TRANSAC_DB.message, error);
+                            return res.status(500).json({
+                                state: 'error',
+                                error: logger_error_enum.errors.E_TRANSAC_DB
+                            });
                         }
+                        Logger.info("Se ha actualizado exitosamente la contraseña del usuario");
+                        return res.status(200).json({
+                            state: 'success',
+                            data: {
+                                user: userDbAux
+                            }
+                        });
                     });
-                });
             });
         });
 });
