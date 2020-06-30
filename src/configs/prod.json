@@ -1,6 +1,8 @@
 {
     "environment" : "prod",
-    "app_properties": {},
+    "app_properties": {
+        "port" : 3000
+    },
     "logger_properties": {
         "level_root": "ROOT"
     }

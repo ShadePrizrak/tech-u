@@ -72,4 +72,4 @@ global.CONTEXT = '/api-techu-back';
  */
 
 //Puerto
-process.env.PORT = PROPERTIES.app_properties.port ? PROPERTIES.app_properties.port : process.env.PORT
+process.env.PORT = process.env.PORT ? process.env.PORT : PROPERTIES.app_properties.port
