@@ -6,7 +6,7 @@
   "scripts": {
     "load": "node src/carga.js",
     "dev": "nodemon src/server.js --environment 'dev'",
-    "start" : "node src/server.js --environment 'prod'",
+    "start": "node src/server.js --environment 'prod'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -32,10 +32,10 @@
     "mongoose-unique-validator": "^2.0.3",
     "mongoose-validator": "^2.1.0",
     "underscore": "^1.10.2",
-    "yargs": "^15.3.1"
+    "yargs": "^15.3.1",
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4",
-    "dotenv": "^8.2.0"
+    "nodemon": "^2.0.4"
   }
 }
