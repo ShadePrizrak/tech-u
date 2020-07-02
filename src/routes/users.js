@@ -4,6 +4,7 @@
 
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
 const { interceptarRequest } = require('../middlewares/interceptor');
 const { validate_jwt } = require('../middlewares/authentication');
 const bcrypt = require('bcrypt');
@@ -19,17 +20,12 @@ let is = 'routes/users';
 const Logger = LOGGER.getLogger(is);
 
 router.use(interceptarRequest);
-router.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE, OPTIONS');
-    next();
-});
+
 /**
  * Method : POST
  * Metodo que sirve para registrar a un nuevo usuario
  */
-router.post('/', (req, res) => {
+router.post('/', cors() , (req, res) => {
     console.log("hola",req);
     let card_number = req.body.card_number;
     let pin = req.body.pin;
@@ -129,7 +125,7 @@ router.post('/', (req, res) => {
  * Method : PUT
  * Metodo que sirve para cambiar la contraseña a un usuario
  */
-router.put('/', (req, res) => {
+router.put('/', cors() , (req, res) => {
 
     let card_number = req.body.card_number;
     let pin = req.body.pin;
