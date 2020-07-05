@@ -1,6 +1,7 @@
 let mongoose = require('mongoose');
 let uniqueVal = require('mongoose-unique-validator');
 let Schema = mongoose.Schema;
+let _ = require('underscore');
 
 //Importación necesarias
 let {
@@ -58,10 +59,19 @@ CustomerSchema.plugin(uniqueVal, {
     message: 'El {PATH} debe ser único'
 });
 
-CustomerSchema.methods.toJSON = function() {
+CustomerSchema.methods.toJSON = function () {
     let Aux = this;
     let AuxObjeto = Aux.toObject();
-    delete AuxObjeto.password;
+
+    let cards = AuxObjeto.cards;
+    if ( cards && cards[0]["card_number"] ) {
+        AuxObjeto.cards = _.map(
+            AuxObjeto.cards,
+            function (card) {
+                card.card_number = `**${card.card_number.substring(card.card_number.length - 3)}`
+                return card;
+            });
+    }
 
     return AuxObjeto;
 }

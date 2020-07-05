@@ -14,7 +14,6 @@ let AccountsSchema = new Schema({
         unique: true
     },
     currency: {
-        unique: true,
         type: String,
         required: [true, 'Campo currency es obligatorio'],
         enum: currency_enum
@@ -33,6 +32,15 @@ let AccountsSchema = new Schema({
     }
 })
 
+
+AccountsSchema.methods.sinIds = function() {
+    let Aux = this;
+    let cuenta = Aux.toObject();
+
+    delete cuenta.customer._id;
+
+    return cuenta;
+}
 
 AccountsSchema.plugin(uniqueVal, {
     message: 'El {PATH} debe ser único'

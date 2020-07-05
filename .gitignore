@@ -14,5 +14,4 @@ mocks/
 .env
 
 #Carga inicial BD
-
 src/carga.js

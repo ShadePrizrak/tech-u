@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 let CustomerModel = require('./models/customers');
 let CardModel = require('./models/cards');
 let AccountModel = require('./models/accounts');
+let OperationModel = require('./models/Operations');
 
 let customersArray = require('../mocks/costumers_mock_data.json');
 let cardsArray = require('../mocks/cards_mock_data.json');
@@ -12,7 +13,7 @@ const accounts = require('./models/accounts');
 
 //Inicio de la aplicación
 mongoose.connect(
-    `mongodb://tech-u-local:Elimperio_72@ds211259.mlab.com:11259/tech-u`,
+    `mongodb://tech-u-local:Elimperio_72@ds059496.mlab.com:59496/tech-u`,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -64,6 +65,17 @@ mongoose.connect(
                 customer: idCustomer
             });
 
+            let operationWriteBd = new OperationModel({
+                destination_account: idAccount,
+                amount: accountsArray[index].balance,
+                customer: idCustomer,
+                concept: "Apertura de cuenta",
+                itf: 0,
+                rate_exchange: 1,
+                moneda_origen: "NUEVO SOL",
+                moneda_destino: "NUEVO SOL"
+            });
+
             customerWriteBd.save((err, response) => {
                 if (err) {
                     console.error("Error al cargar el customer " + JSON.stringify(customerWriteBd) + " " + err);
@@ -72,7 +84,7 @@ mongoose.connect(
 
                     cardsWriteBd.save((err,response)=>{
                         if(err){
-                            console.error("Error al cargar el customer " + JSON.stringify(cardsWriteBd) + " " + err);
+                            console.error("Error al cargar el card " + JSON.stringify(cardsWriteBd) + " " + err);
                         }else{
                             console.info("Se inserto el card " + JSON.stringify(response));
                         }
@@ -80,9 +92,17 @@ mongoose.connect(
 
                     accountWriteBd.save((err,response)=>{
                         if(err){
-                            console.error("Error al cargar el customer " + JSON.stringify(accountWriteBd) + " " + err);
+                            console.error("Error al cargar la cuenta " + JSON.stringify(accountWriteBd) + " " + err);
                         }else{
-                            console.info("Se inserto el card " + JSON.stringify(response));
+                            console.info("Se inserto el cuenta " + JSON.stringify(response));
+                        }
+                    });
+
+                    operationWriteBd.save((err,response)=>{
+                        if(err){
+                            console.error("Error al cargar el operation " + JSON.stringify(accountWriteBd) + " " + err);
+                        }else{
+                            console.info("Se inserto el operation " + JSON.stringify(response));
                         }
                     });
 

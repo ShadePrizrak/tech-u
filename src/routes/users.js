@@ -26,16 +26,15 @@ router.use(interceptarRequest);
  * Metodo que sirve para registrar a un nuevo usuario
  */
 router.post('/', cors() , (req, res) => {
-    console.log("hola",req);
     let card_number = req.body.card_number;
     let pin = req.body.pin;
     let password = req.body.password;
 
     if (!(card_number && pin && password)) {
-        Logger.error("Falta ingresar parametros necesarios");
-        return res.status(400).json({
+        Logger.error(logger_error_enum.errors.E_PARAM_REQ.message, "card_number pin password");
+        return res.status(500).json({
             state: 'error',
-            err: 'La petición no ha recibido los parametros necesarios'
+            error: logger_error_enum.errors.E_PARAM_REQ
         });
     }
 
@@ -132,27 +131,37 @@ router.put('/', cors() , (req, res) => {
     let password = req.body.password;
 
     if (!(card_number && pin && password)) {
-        return res.status(400).json({
+        Logger.error(logger_error_enum.errors.E_PARAM_REQ.message, "card_number pin password");
+        return res.status(500).json({
             state: 'error',
-            err: 'La petición no ha recibido los parametros necesarios'
+            error: logger_error_enum.errors.E_PARAM_REQ
         });
     }
 
     CardsSchema.findOne({ 'card_number': card_number })
         .populate('Customer', '_id')
-        .exec((err, CardDB) => {
-            if (err) {
+        .exec((error, CardDB) => {
+            if (error) {
                 Logger.error(logger_error_enum.errors.E_TRANSAC_DB.message, error);
                 return res.status(500).json({
                     state: 'error',
                     error: logger_error_enum.errors.E_TRANSAC_DB
                 });
             };
-            if (!bcrypt.compareSync(pin, CardDB.pin)) {
-                Logger.error("Clave PIN no coincide con la tarjeta");
-                return res.status(200).json({
+
+            if(!CardDB){
+                Logger.error(logger_error_enum.errors.E_CARD_INVALID_PIN_PAN.message, "Numero tarjeta");
+                return res.status(409).json({
                     state: 'error',
-                    err
+                    error: logger_error_enum.errors.E_CARD_INVALID_PIN_PAN
+                });
+            }
+
+            if (!bcrypt.compareSync(pin, CardDB.pin)) {
+                Logger.error(logger_error_enum.errors.E_CARD_INVALID_PIN_PAN.message, "PIN");
+                return res.status(409).json({
+                    state: 'error',
+                    error: logger_error_enum.errors.E_CARD_INVALID_PIN_PAN
                 });
             }
 

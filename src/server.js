@@ -28,6 +28,8 @@ let generarUriMongodb = function () {
 app.use(`${CONTEXT}/users`, require('./routes/users'));
 app.use(`${CONTEXT}/auth`, require('./routes/auth'));
 app.use(`${CONTEXT}/customers`, require('./routes/customers'));
+app.use(`${CONTEXT}/accounts`, require('./routes/accounts'));
+app.use(`${CONTEXT}/operations`, require('./routes/operations'));
 
 //Inicio de la aplicación
 mongoose.connect(
@@ -35,15 +37,16 @@ mongoose.connect(
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        autoIndex: false
+        autoIndex: false,
+        useFindAndModify: false
     },
     (error, resp) => {
         if (error) {
             Logger.error(`Error al conectarse con la base de datos - ${error}`);
+            return;
         };
 
         Logger.info('Base de datos ONLINE');
-        console.log(process.env.PORT);
         app.listen(process.env.PORT, () => {
             Logger.info(`Escuchando desde el puerto ${process.env.PORT}`);
         });

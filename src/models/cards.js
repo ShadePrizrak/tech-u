@@ -40,10 +40,12 @@ CardsSchema.methods.toJSON = function() {
     let Aux = this;
     let AuxObjeto = Aux.toObject();
     let card_number = AuxObjeto.card_number
-    AuxObjeto.card_number = `**${card_number.substring(card_number.substring)}`
+    
+    AuxObjeto.card_number = `**${card_number.substring(card_number.length - 3)}`
 
     return AuxObjeto;
 }
+
 
 CardsSchema.plugin(uniqueVal, {
     message: 'El {PATH} debe ser único'
