@@ -82,7 +82,7 @@ router.post('/:customerId/:chargeAccountId/:destinationAccountId', validate_jwt,
         Logger.info("Resultado obtenido de la consulta ", chargeAccountDb);
         if (!(chargeAccountDb.customer == customerId)) {
             Logger.error(logger_error_enum.errors.E_OPERATION_NOT_OWNER_CUSTOMER.message);
-            return res.status(490).json({
+            return res.status(409).json({
                 state: 'error',
                 error: logger_error_enum.errors.E_OPERATION_NOT_OWNER_CUSTOMER
             });
@@ -184,7 +184,7 @@ router.post('/:customerId/:chargeAccountId/:destinationAccountId', validate_jwt,
                         };
 
                         res.status(200).json({
-                            status: 'success',
+                            state: 'success',
                             data: operationDb
                         });
                     });
@@ -198,7 +198,7 @@ router.post('/:customerId/:chargeAccountId/:destinationAccountId', validate_jwt,
 let ejecutarExchangeService = (monto, currencyChargeAccount, currencyDestinationAccount) => {
     return new Promise((resolve, reject) => {
         Logger.info("Realizando consulta de conversión");
-        client.get(`${currency[currencyChargeAccount]}/${currency[currencyDestinationAccount]}/json?quantity=${monto}${apiKey}`, function (error, res, body) {
+        client.get(`${currency[currencyChargeAccount].id}/${currency[currencyDestinationAccount].id}/json?quantity=${monto}${apiKey}`, function (error, res, body) {
             if (error) {
                 Logger.info("Se obtuvo un error mientras se obtenia la conversión: ", error);
                 reject({amount: -1});

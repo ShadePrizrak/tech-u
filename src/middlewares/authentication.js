@@ -13,7 +13,7 @@ let validate_jwt = (req, res, next) => {
     if (!customerId) {
         Logger.error(logger_enum.errors.E_PARAM_REQ.message);
         return res.status(400).json({
-            status: 'error',
+            state: 'error',
             error: logger_enum.errors.E_PARAM_REQ
         });
     }
@@ -23,7 +23,7 @@ let validate_jwt = (req, res, next) => {
     if (!token) {
         Logger.error(logger_enum.errors.E_AUTH_NO_TOKEN.message);
         return res.status(401).json({
-            status: 'error',
+            state: 'error',
             error: logger_enum.errors.E_AUTH_NO_TOKEN
         });
     }
@@ -32,7 +32,7 @@ let validate_jwt = (req, res, next) => {
         if (error) {
             Logger.error(logger_enum.errors.E_AUTH_NO_VALID_TOKEN.message);
             return res.status(401).json({
-                status: 'error',
+                state: 'error',
                 error: logger_enum.errors.E_AUTH_NO_VALID_TOKEN
             });
         };
@@ -41,7 +41,7 @@ let validate_jwt = (req, res, next) => {
         if (customerId != customer._id) {
             Logger.error(logger_enum.errors.E_AUTH_NO_CORRECT_TOKEN.message);
             return res.status(401).json({
-                status: 'error',
+                state: 'error',
                 error: logger_enum.errors.E_AUTH_NO_CORRECT_TOKEN
             });
         };
@@ -62,7 +62,7 @@ let refresh_jwt = (req, res, next) => {
     if (!token) {
         Logger.error(logger_enum.errors.E_AUTH_NO_TOKEN.message);
         return res.status(401).json({
-            status: 'error',
+            state: 'error',
             error: logger_enum.errors.E_AUTH_NO_TOKEN
         });
     }
@@ -71,7 +71,7 @@ let refresh_jwt = (req, res, next) => {
         if (error) {
             Logger.error(logger_enum.errors.E_AUTH_NO_VALID_TOKEN.message);
             return res.status(401).json({
-                status: 'error',
+                state: 'error',
                 error: logger_enum.errors.E_AUTH_NO_VALID_TOKEN
             });
         };

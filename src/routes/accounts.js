@@ -34,7 +34,7 @@ router.get('/', refresh_jwt, (req, res) => {
 
     if (Number.isNaN(account_number) || account_number.length != 18) {
         Logger.error(logger_error_enum.errors.E_ACCOUNT_BAD_NUMBER.message, account_number);
-        return res.status(500).json({
+        return res.status(400).json({
             state: 'error',
             error: logger_error_enum.errors.E_ACCOUNT_BAD_NUMBER
         });
@@ -54,15 +54,15 @@ router.get('/', refresh_jwt, (req, res) => {
             if (error) {
                 Logger.error(logger_error_enum.errors.E_TRANSAC_DB.message, error);
                 return res.status(500).json({
-                    status: 'error',
+                    state: 'error',
                     error: logger_error_enum.errors.E_TRANSAC_DB
                 });
             };
 
             if (!accountDB) {
                 Logger.error(logger_error_enum.errors.E_ACCOUNT_NOT_EXIST.message);
-                return res.status(500).json({
-                    status: 'error',
+                return res.status(409).json({
+                    state: 'error',
                     error: logger_error_enum.errors.E_TRANSAC_DB
                 });
             };

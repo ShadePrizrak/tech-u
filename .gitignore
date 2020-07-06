@@ -14,4 +14,5 @@ mocks/
 .env
 
 #Carga inicial BD
-src/carga.js
+./src/carga.js
+./src/prueba.js

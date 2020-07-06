@@ -76,7 +76,7 @@ router.post('/', (req, res) => {
                     Logger.info("Resultado obtenido de la consulta ", UserDb);
                     if (!UserDb) {
                         Logger.error(logger_enum.errors.E_AUTH_NO_REG.message,);
-                        return res.status(400).json({
+                        return res.status(409).json({
                             ok: false,
                             error: logger_enum.errors.E_AUTH_NO_REG
                         });
@@ -84,7 +84,7 @@ router.post('/', (req, res) => {
 
                     if (!bcrypt.compareSync(password, UserDb.password)) {
                         Logger.error(logger_enum.errors.E_AUTH_CRED.message, " - PASSWORD -");
-                        return res.status(400).json({
+                        return res.status(409).json({
                             ok: false,
                             error: logger_enum.errors.E_AUTH_CRED
                         });
@@ -97,13 +97,63 @@ router.post('/', (req, res) => {
                     res.status(200);
                     res.setHeader('token', token);
                     return res.json({
-                        status: 'success',
+                        state: 'success',
                         data: {
                             customerId: customer._id
                         }
                     });
                 });
         });
+});
+
+router.post('/', (req, res) => {
+
+    let numDocumento = req.body.numero_documento;
+
+    Logger.info("Verificando parametros del REQUEST");
+    if (!numDocumento) {
+        Logger.error(logger_enum.errors.E_PARAM_REQ);
+        return res.status(400).json({
+            state: 'error',
+            error: {
+                id: logger_enum.errors.E_PARAM_REQ.id,
+                message: logger_enum.errors.E_PARAM_REQ.message,
+            }
+        });
+    }
+
+    Logger.addContext('Cliente', numDocumento);
+    
+    if (!token) {
+        Logger.error(logger_enum.errors.E_AUTH_NO_TOKEN.message);
+        return res.status(401).json({
+            state: 'error',
+            error: logger_enum.errors.E_AUTH_NO_TOKEN
+        });
+    }
+
+    jwt.verify(token, process.env.SEED_JWT, (error, decode) => {
+        if (error) {
+            Logger.error(logger_enum.errors.E_AUTH_NO_VALID_TOKEN.message);
+            return res.status(401).json({
+                state: 'error',
+                error: logger_enum.errors.E_AUTH_NO_VALID_TOKEN
+            });
+        };
+
+        let customer= decode.customer;
+        if (numDocumento != customer.personal_id) {
+            Logger.error(logger_enum.errors.E_AUTH_NO_CORRECT_TOKEN.message);
+            return res.status(401).json({
+                state: 'error'
+            });
+        };
+
+        Logger.error("El token le corresponde al cliente");
+        return res.status(200).json({
+            state: 'success'
+        });
+    });
 });
 
 module.exports = router;

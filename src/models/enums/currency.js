@@ -1,6 +1,6 @@
 let currency = {
-    "DOLAR": "USD",
-    "NUEVO SOL": "PEN"
+    "DOLAR": {id: "USD", short:'$.'},
+    "NUEVO SOL": {id: "PEN", short:'S/.'}
 };
 
 module.exports = {

@@ -9,6 +9,6 @@ let moneda1 = "NUEVO SOL";
 let moneda2 = "DOLAR";
 let cantidad = 123;
 
-client.get(`${currency[moneda1]}/${currency[moneda2]}/json?quantity=${cantidad}${apiKey}`, function (err, res, body) {
+client.get(`${currency["DOLAR"].id}/${currency["NUEVO SOL"].id}/json?quantity=${12}${apiKey}`, function (error, res, body) {
     return console.log(body.result.amount);
 });

@@ -88,7 +88,7 @@ router.get('/:customerId/accounts', validate_jwt, (req, res) => {
             Logger.info("La consulta fue exitosa");
             return res.status(200).json({
                 status: "success",
-                data: accountsDB
+                data: _.map(accountsDB, (account)=>account.toFormat())
             });
         });
 });
@@ -143,26 +143,9 @@ router.get('/:customerId/accounts/:accountId', validate_jwt, (req, res) => {
                         });
                     };
 
-                    let customerAccount = accountDb.toJSON();
+                    let customerAccount = accountDb.toFormat();
                     if (operationsDb) {
-                        let ArrayOperaciones = _.map(operationsDb,
-                            function (operation) {
-                                let operationAux = operation.toJSON();
-
-                                if (operationAux.charge_account == accountId) {
-                                    operationAux.amount *= -1;
-                                }
-                                if(operationAux.destination_account == accountId){
-                                    operationAux.amount *= operationAux.rate_exchange;
-                                }
-
-                                delete operationAux.charge_account;
-                                delete operationAux.destination_account;
-                                delete operationAux.rate_exchange;
-                                delete operationAux.__v;
-                                
-                                return operationAux;
-                            });
+                        let ArrayOperaciones = _.map(operationsDb,(operation)=>operation.toShowAccountFormat(accountId));
                         customerAccount["operations"] = ArrayOperaciones;
                     }
                     return res.status(200).json({
