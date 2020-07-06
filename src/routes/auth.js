@@ -106,7 +106,7 @@ router.post('/', (req, res) => {
         });
 });
 
-router.post('/', (req, res) => {
+router.get('/', (req, res) => {
 
     let numDocumento = req.body.numero_documento;
 
