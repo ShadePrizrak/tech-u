@@ -107,8 +107,8 @@ router.post('/', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-
     let numDocumento = req.body.numero_documento;
+    let token = req.get('token');
 
     Logger.info("Verificando parametros del REQUEST");
     if (!numDocumento) {
