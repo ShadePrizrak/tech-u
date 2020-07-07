@@ -1,0 +1,11 @@
+{
+    "environment" : "dev",
+    "app_properties": {
+        "port" : 3000
+    },
+    "logger_properties": {
+        "modules":{
+            "root" : "ROOT"
+        } 
+    }
+}
