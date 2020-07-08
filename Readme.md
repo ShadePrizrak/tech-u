@@ -36,7 +36,7 @@ Para poder levantar la aplicación se debe contar los siguientes requisitos
 docker build -t api-tech-u .
 docker run api-tech-u
 ~~~
-5. En caso no contrar con Docker, se puede ejecutar el siguiente comando
+5. En caso no contar con Docker, se puede ejecutar los siguientes comandos.
 ~~~
 npm install
 npm run dev
@@ -45,7 +45,7 @@ npm run dev
 ### Live
 El despliegue continuo habilitado, permite que solo con realizar un push en la rama **master** del repositorio GitHub sea automaticamente desplegado. Una vez hecho se puede utilizar la coleccion postman con el enviroment **[LIVE] Api-Tech-U** 
 
-*El despliegue continua esta habilitado con Heroku, y las variables de enterno ya se encuentran configuradas ahí*
+*El despliegue continuo esta habilitado con Heroku, y las variables de entorno ya se encuentran configuradas ahí*
 ## Dependencias
 El proyecto requiere las siguientes dependencias para su ejecución 
 ### Productivas
