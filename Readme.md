@@ -38,6 +38,7 @@ docker run api-tech-u
 ~~~
 5. En caso no contrar con Docker, se puede ejecutar el siguiente comando
 ~~~
+npm install
 npm run dev
 ~~~
 6. Utilizar la colección Postman para verificar la funcionalidad de los servicios, utilizando el enviroment **[WORK] Api-Tech-U**
