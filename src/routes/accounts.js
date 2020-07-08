@@ -4,6 +4,7 @@
 
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
 const { interceptarRequest } = require('../middlewares/interceptor');
 const { validate_jwt, refresh_jwt} = require('../middlewares/authentication');
 const logger_error_enum = require('../models/enums/logger');
@@ -16,14 +17,14 @@ const AccountsSchema = require('../models/accounts');
 
 //Logger
 let is = 'routes/accounts';
+router.all('*',cors());
 const Logger = LOGGER.getLogger(is);
 
 router.use(interceptarRequest);
 
-router.get('/', refresh_jwt, (req, res) => {
-    let account_number = req.body.account_number;
-    Logger.addContext('Cliente', req.customer._id);
-
+router.get('/:account_number', refresh_jwt, (req, res) => {
+    let account_number = req.params.account_number;
+    let token = req.token;
     if (!account_number) {
         Logger.error(logger_error_enum.errors.E_PARAM_REQ.message, "account_number");
         return res.status(500).json({
@@ -69,7 +70,10 @@ router.get('/', refresh_jwt, (req, res) => {
 
             return res.status(200).json({
                 status: "success",
-                data: accountDB.sinIds()
+                data: {
+                    customer : accountDB.sinIds(),
+                    token
+                }
             });
         })
 });

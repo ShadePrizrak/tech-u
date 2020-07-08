@@ -4,6 +4,7 @@
 
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
 const { interceptarRequest } = require('../middlewares/interceptor');
 const bcrypt = require('bcrypt');
 const logger_enum = require('../models/enums/logger');
@@ -15,12 +16,12 @@ const UserSchema = require('../models/user');
 
 //Logger
 let is = 'routes/auth';
+router.all('*',cors());
 const Logger = LOGGER.getLogger(is);
 
 router.use(interceptarRequest);
 
 router.post('/', (req, res) => {
-
     let numDocumento = req.body.numero_documento;
     let tipoDocumento = req.body.tipo_documento;
     let password = req.body.password;
@@ -106,12 +107,11 @@ router.post('/', (req, res) => {
         });
 });
 
-router.get('/', (req, res) => {
-    let numDocumento = req.body.numero_documento;
-    let token = req.get('token');
-
+router.get('/:customerId', (req, res) => {
+    let customerId = req.params.customerId;
+    let token = req.get('tsec');
     Logger.info("Verificando parametros del REQUEST");
-    if (!numDocumento) {
+    if (!customerId) {
         Logger.error(logger_enum.errors.E_PARAM_REQ);
         return res.status(400).json({
             state: 'error',
@@ -122,7 +122,7 @@ router.get('/', (req, res) => {
         });
     }
 
-    Logger.addContext('Cliente', numDocumento);
+    Logger.addContext('Cliente', customerId);
     
     if (!token) {
         Logger.error(logger_enum.errors.E_AUTH_NO_TOKEN.message);
@@ -140,9 +140,8 @@ router.get('/', (req, res) => {
                 error: logger_enum.errors.E_AUTH_NO_VALID_TOKEN
             });
         };
-
         let customer= decode.customer;
-        if (numDocumento != customer.personal_id) {
+        if (customerId != customer._id) {
             Logger.error(logger_enum.errors.E_AUTH_NO_CORRECT_TOKEN.message);
             return res.status(401).json({
                 state: 'error'

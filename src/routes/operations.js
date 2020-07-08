@@ -4,8 +4,9 @@
 
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
 const { interceptarRequest } = require('../middlewares/interceptor');
-const { validate_jwt } = require('../middlewares/authentication');
+const { refresh_jwt, validate_jwt } = require('../middlewares/authentication');
 const { currency } = require('../models/enums/currency');
 const logger_error_enum = require('../models/enums/logger');
 const request = require('request-json');
@@ -18,6 +19,7 @@ const OperationsSchema = require('../models/operations');
 
 //Logger
 let is = 'routes/operations';
+router.all('*',cors());
 const Logger = LOGGER.getLogger(is);
 
 //Variables 
@@ -27,14 +29,14 @@ const apiKey = '&key=4620|HiTENtqwJraRjynsHQq0oWf9pJ8DW_tU';
 
 router.use(interceptarRequest);
 
-router.post('/:customerId/:chargeAccountId/:destinationAccountId', validate_jwt, (req, res) => {
+router.post('/:customerId/:chargeAccountId/:destinationAccountId', (req, res) => {
     let customerId = req.params.customerId;
     let chargeAccountId = req.params.chargeAccountId;
     let destinationAccountId = req.params.destinationAccountId;
-
     let monto = req.body.amount;
     let concepto = req.body.concept;
 
+    
     Logger.addContext('Cliente', customerId);
     Logger.info("Inicializando una transferencia bancaria ", chargeAccountId, "->", destinationAccountId);
 
@@ -185,7 +187,10 @@ router.post('/:customerId/:chargeAccountId/:destinationAccountId', validate_jwt,
 
                         res.status(200).json({
                             state: 'success',
-                            data: operationDb
+                            data: {
+                                detail: operationDb,
+                                token: req.token
+                            }
                         });
                     });
                 });

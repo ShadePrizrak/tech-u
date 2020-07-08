@@ -4,11 +4,13 @@
 
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
 const _ = require('underscore');
 const { interceptarRequest } = require('../middlewares/interceptor');
-const { validate_jwt } = require('../middlewares/authentication');
+const { validate_jwt, refresh_jwt } = require('../middlewares/authentication');
 const logger_error_enum = require('../models/enums/logger');
 
+const jwt = require('jsonwebtoken');
 
 //Schemas
 const CardsSchema = require('../models/cards');
@@ -18,6 +20,7 @@ const OperationsSchema = require('../models/operations');
 
 //Logger
 let is = 'routes/customers';
+router.all('*', cors());
 const Logger = LOGGER.getLogger(is);
 
 router.use(interceptarRequest);
@@ -52,10 +55,14 @@ router.get('/:customerId/posicion_global', validate_jwt, (req, res) => {
 
             return res.status(200).json({
                 status: "success",
-                data: customerDb
+                data: {
+                    position_global: customerDb,
+                    token: req.token
+                }
             });
         })
 });
+
 
 /**
  * Funcion que muestra las cuentas de un cliente
@@ -63,7 +70,6 @@ router.get('/:customerId/posicion_global', validate_jwt, (req, res) => {
 router.get('/:customerId/accounts', validate_jwt, (req, res) => {
     let customerId = req.params.customerId;
     Logger.addContext('Cliente', customerId);
-
     AccountsSchema
         .find(
             { "customer": customerId },
@@ -88,7 +94,10 @@ router.get('/:customerId/accounts', validate_jwt, (req, res) => {
             Logger.info("La consulta fue exitosa");
             return res.status(200).json({
                 status: "success",
-                data: _.map(accountsDB, (account)=>account.toFormat())
+                data: {
+                    accounts: _.map(accountsDB, (account) => account.toFormat()),
+                    token: req.token
+                }
             });
         });
 });
@@ -145,12 +154,15 @@ router.get('/:customerId/accounts/:accountId', validate_jwt, (req, res) => {
 
                     let customerAccount = accountDb.toFormat();
                     if (operationsDb) {
-                        let ArrayOperaciones = _.map(operationsDb,(operation)=>operation.toShowAccountFormat(accountId));
+                        let ArrayOperaciones = _.map(operationsDb, (operation) => operation.toShowAccountFormat(accountId));
                         customerAccount["operations"] = ArrayOperaciones;
                     }
                     return res.status(200).json({
                         status: "success",
-                        data: customerAccount
+                        data: {
+                            cuenta: customerAccount,
+                            token: req.token
+                        }
                     });
                 });
         });
@@ -159,7 +171,7 @@ router.get('/:customerId/accounts/:accountId', validate_jwt, (req, res) => {
 /**
  * Funcion que muestra las tarjetas de un cliente
  */
-router.get('/:customerId/cards', validate_jwt, (req, res) => {
+router.get('/:customerId/cards',validate_jwt, (req, res) => {
     let customerId = req.params.customerId;
     Logger.addContext('Cliente', customerId);
 
@@ -186,7 +198,10 @@ router.get('/:customerId/cards', validate_jwt, (req, res) => {
 
             return res.status(200).json({
                 status: "success",
-                data: cardsDB
+                data: {
+                    cards: cardsDB,
+                    token: req.token
+                }
             });
         });
 });

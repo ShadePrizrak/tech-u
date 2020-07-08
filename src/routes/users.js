@@ -17,6 +17,10 @@ const UserSchema = require('../models/user');
 
 //Logger
 let is = 'routes/users';
+<<<<<<< HEAD
+=======
+router.all('*',cors());
+>>>>>>> bitbu/master
 const Logger = LOGGER.getLogger(is);
 
 router.use(interceptarRequest);
@@ -25,7 +29,11 @@ router.use(interceptarRequest);
  * Method : POST
  * Metodo que sirve para registrar a un nuevo usuario
  */
+<<<<<<< HEAD
 router.post('/', cors() , (req, res) => {
+=======
+router.post('/' , (req, res) => {
+>>>>>>> bitbu/master
     let card_number = req.body.card_number;
     let pin = req.body.pin;
     let password = req.body.password;
@@ -124,7 +132,11 @@ router.post('/', cors() , (req, res) => {
  * Method : PUT
  * Metodo que sirve para cambiar la contraseña a un usuario
  */
+<<<<<<< HEAD
 router.put('/', cors() , (req, res) => {
+=======
+router.put('/', (req, res) => {
+>>>>>>> bitbu/master
 
     let card_number = req.body.card_number;
     let pin = req.body.pin;

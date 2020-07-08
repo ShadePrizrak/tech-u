@@ -49,7 +49,8 @@ let validate_jwt = (req, res, next) => {
         Logger.info("Se valido correctamente el token");
         req.customer = customer;
         let newToken = jwt.sign({ customer }, process.env.SEED_JWT, { expiresIn: process.env.CADUCIDAD_JWT });
-        res.setHeader('token', newToken);
+        req.token= newToken;
+        req
         next();
     });
 };
@@ -57,8 +58,7 @@ let validate_jwt = (req, res, next) => {
 
 //Esta funcion nos verifica que el customerId corresponde al TOKEN - Si es correcto entrega un nuevo Token
 let refresh_jwt = (req, res, next) => {
-    let token = req.get('token');
-
+    let token = req.get('tsec');
     if (!token) {
         Logger.error(logger_enum.errors.E_AUTH_NO_TOKEN.message);
         return res.status(401).json({
@@ -81,7 +81,7 @@ let refresh_jwt = (req, res, next) => {
         Logger.info("Se valido correctamente el token");
         req.customer = customer;
         let newToken = jwt.sign({ customer }, process.env.SEED_JWT, { expiresIn: process.env.CADUCIDAD_JWT });
-        res.setHeader('token', newToken);
+        req.token= newToken;
         next();
     });
 };
