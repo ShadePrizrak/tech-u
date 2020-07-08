@@ -1,0 +1,530 @@
+{
+	"info": {
+		"_postman_id": "ba853442-ba61-4cd4-be6b-60ad0d1200ad",
+		"name": "TECH-U PRACTITIONER",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Creación de contraseña",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"card_number\": \"4714365302688795\",\n\t\"pin\": \"9007\",\n\t\"password\": \"Elimperio72\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-base}}/users",
+							"host": [
+								"{{url-base}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificación de contraseña",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"card_number\": \"4895224298408887\",\n\t\"pin\": \"9175\",\n\t\"password\": \"Elimperio35\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-base}}/users/",
+							"host": [
+								"{{url-base}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Carpeta que contiene las peticiones a la ruta /users",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Inicio de sesión",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5858b5e1-8554-467b-a785-e53f099b4434",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"customerId\",jsonData.data.customerId);\r",
+									"postman.setEnvironmentVariable(\"token\",jsonData.data.token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"numero_documento\": \"59117626\",\n\t\"tipo_documento\": \"DNI\",\n\t\"password\": \"Elimperio72\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-base}}/auth/",
+							"host": [
+								"{{url-base}}"
+							],
+							"path": [
+								"auth",
+								""
+							]
+						},
+						"description": "Petición que sirve para el inicio de sesión del usuario mediante un JWT."
+					},
+					"response": []
+				},
+				{
+					"name": "Validar Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "aa9876e3-e348-45a6-8b07-582474faa9b0",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"numero_documento\": \"59117626\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-base}}/auth/",
+							"host": [
+								"{{url-base}}"
+							],
+							"path": [
+								"auth",
+								""
+							]
+						},
+						"description": "Petición que sirve para validar que el token corresponde al usuario"
+					},
+					"response": []
+				}
+			],
+			"description": "Contiene las peticiones correspondiente a la autenticación del cliente.",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Customers",
+			"item": [
+				{
+					"name": "Mostrar Posición Global",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "931ec45b-9a5e-48fa-b46b-ec0d5d31404f",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"token\",jsonData.data.token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "tsec",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-base}}/customers/{{customerId}}/posicion_global",
+							"host": [
+								"{{url-base}}"
+							],
+							"path": [
+								"customers",
+								"{{customerId}}",
+								"posicion_global"
+							]
+						},
+						"description": "Petición que permite obtener la data necesaria para la consulta de la posición global"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Cuentas del Cliente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4118b656-b98f-467b-aee5-61fe93eb4fbe",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"charge_account\",jsonData.data.accounts[0].account_number);\r",
+									"postman.setEnvironmentVariable(\"accountId\",jsonData.data.accounts[0]._id);\r",
+									"postman.setEnvironmentVariable(\"token\",jsonData.data.token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "tsec",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-base}}/customers/{{customerId}}/accounts",
+							"host": [
+								"{{url-base}}"
+							],
+							"path": [
+								"customers",
+								"{{customerId}}",
+								"accounts"
+							]
+						},
+						"description": "Petición que permite obtener la data referente a las cuentas del cliente"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Tarjetas del Cliente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4c695b5f-8a71-4619-9315-d6cc2ac2249d",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"token\",jsonData.data.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "tsec",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-base}}/customers/{{customerId}}/cards",
+							"host": [
+								"{{url-base}}"
+							],
+							"path": [
+								"customers",
+								"{{customerId}}",
+								"cards"
+							]
+						},
+						"description": "Petición que permite obtener la data referente a las cuentas del cliente"
+					},
+					"response": []
+				},
+				{
+					"name": "Mostrar Cuenta del Cliente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cf60a937-c13e-450a-b790-e6394c8c2532",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"charge_account\",jsonData.data.account_number);\r",
+									"postman.setEnvironmentVariable(\"token\",jsonData.data.token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "tsec",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-base}}/customers/{{customerId}}/accounts/{{accountId}}",
+							"host": [
+								"{{url-base}}"
+							],
+							"path": [
+								"customers",
+								"{{customerId}}",
+								"accounts",
+								"{{accountId}}"
+							]
+						},
+						"description": "Petición que permite obtener la data referente a una sola cuenta del cliente, y sus operaciones"
+					},
+					"response": []
+				}
+			],
+			"description": "Esta carpeta contiene las peticiones que se pueden realizar a la ruta /costumers",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Obtener Cuenta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ed77c84e-2a11-4c71-9768-be4ef1ed5194",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"destination_account\",jsonData.data.customer.account_number);\r",
+									"postman.setEnvironmentVariable(\"destinationAccountId\",jsonData.data.customer._id);\r",
+									"postman.setEnvironmentVariable(\"token\",jsonData.data.token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "tsec",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-base}}/accounts/{{account_number_tercero}}",
+							"host": [
+								"{{url-base}}"
+							],
+							"path": [
+								"accounts",
+								"{{account_number_tercero}}"
+							]
+						},
+						"description": "Petición que permite obtener la data de una cuenta y la información basica de su dueño"
+					},
+					"response": []
+				}
+			],
+			"description": "Peticiones ligadas a la coleccion \"Accounts\"",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Operations",
+			"item": [
+				{
+					"name": "Realizar una operacion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "581fcc35-b8c9-4c79-b573-607d4c433ab4",
+								"exec": [
+									"var token=postman.getResponseHeader('token');\r",
+									"postman.setEnvironmentVariable(\"token\",token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\": 10,\r\n    \"concept\": \"Esta es una transacción de prueba\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url-base}}/operations/{{customerId}}/{{accountId}}/{{destinationAccountId}}",
+							"host": [
+								"{{url-base}}"
+							],
+							"path": [
+								"operations",
+								"{{customerId}}",
+								"{{accountId}}",
+								"{{destinationAccountId}}"
+							]
+						},
+						"description": "Petición que permite obtener generar una nueva operación, es decir, una transferencia de dinero entre cuentas."
+					},
+					"response": []
+				}
+			],
+			"description": "Carpeta que guarda las peticiones a la coleccion \"Operations\"",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Creación de contraseña Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"card_number\": \"4895224298408887\",\n\t\"pin\": \"9175\",\n\t\"password\": \"Elimperio72\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url-base}}/customers/",
+					"host": [
+						"{{url-base}}"
+					],
+					"path": [
+						"customers",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
