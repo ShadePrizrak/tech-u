@@ -13,7 +13,6 @@ El objetivo del presente proyecto es el desarrollo de un aplicativo web para una
 1. Listado de tarjetas por cliente.
 1. Realizar transferencias de dinero entre *cuentas* de *clientes*.
 1. Conversión de moneda cuando la transferencia es entre cuentas de distinta moneda.
-
 ## Variables entorno
 Para el correcto funcionamiento de la aplicación se necesita que el servidor que corre la aplicación tenga configurada las siguientes variables.
 * DB_HOST : URL de la BD MLab.
@@ -22,6 +21,29 @@ Para el correcto funcionamiento de la aplicación se necesita que el servidor qu
 * DB_PASS : Contraseña de la base de datos.
 * SEED_JWT : Semilla de encriptación JWT
 * CADUCIDAD_JWT : Duración del token JWT
+## Requisitos
+Para poder levantar la aplicación se debe contar los siguientes requisitos
+* Node js versión ^8.16.1
+* NPM ^6.4.1
+## Dependencias
+El proyecto requiere las siguientes dependencias para su ejecución 
+### Productivas
+1. bcrypt ^3.0.0
+1. body-parser ^1.19.0
+1. cors ^2.8.5
+1. dotenv ^8.2.0
+1. express ^4.17.1
+1. jsonwebtoken ^8.5.1
+1. log4js ^6.2.1
+1. mongoose ^5.9.14
+1. mongoose-unique-validator ^2.0.3
+1. mongoose-validator ^2.1.0
+1. request-json ^0.6.5
+1. underscore ^1.10.2
+1. yargs ^15.3.1"
+### Desarrollo
+1. Nodemon ^2.0.4
+
 ## Recursos
 ### *Usuarios*
 #### POST

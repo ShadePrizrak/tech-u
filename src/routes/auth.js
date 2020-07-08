@@ -96,11 +96,11 @@ router.post('/', (req, res) => {
                     customer["user"] = {_id: UserDb._id};
                     let token = jwt.sign({ customer }, process.env.SEED_JWT, { expiresIn: process.env.CADUCIDAD_JWT });
                     res.status(200);
-                    res.setHeader('token', token);
                     return res.json({
                         state: 'success',
                         data: {
-                            customerId: customer._id
+                            customerId: customer._id,
+                            token
                         }
                     });
                 });

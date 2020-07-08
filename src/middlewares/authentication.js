@@ -7,7 +7,7 @@ const Logger = LOGGER.getLogger(is);
 
 //Esta funcion nos verifica que el customerId corresponde al TOKEN - Si es correcto entrega un nuevo Token
 let validate_jwt = (req, res, next) => {
-    let token = req.get('token');
+    let token = req.get('tsec');
     let customerId = req.body.customer_id || req.params.customerId;
 
     if (!customerId) {

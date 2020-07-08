@@ -33,10 +33,10 @@ router.get('/:customerId/posicion_global', validate_jwt, (req, res) => {
     Logger.addContext('Cliente', customerId);
 
     CostumersSchema
-        .findById(customerId, '_id accounts cards')
+        .findById(customerId, '_id first_name last_name accounts cards')
         .populate({
             path: 'accounts',
-            select: '_id account_number balance',
+            select: '_id account_number balance currency',
             model: 'Accounts'
         })
         .populate({

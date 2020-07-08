@@ -9,6 +9,8 @@ let {
     gender_enum
 } = require('./enums/enums');
 
+let currencyData = require('./enums/currency').currency;
+
 let CustomerSchema = new Schema({
     personal_id_type: {
         type: String,
@@ -70,6 +72,23 @@ CustomerSchema.methods.toJSON = function () {
             function (card) {
                 card.card_number = `**${card.card_number.substring(card.card_number.length - 3)}`
                 return card;
+            });
+    }
+
+    let accounts = AuxObjeto.accounts;
+    if ( accounts && accounts[0]["account_number"] ) {
+        AuxObjeto.accounts = _.map(
+            AuxObjeto.accounts,
+            function (account) {
+                let currency_short = currencyData[account.currency].short;
+                let account_number = account["account_number"];
+                account["currency_short_format"] = currency_short;
+                account["balance_format"] = `${currency_short} ${account["balance"]}`;
+                account["cci_format"] = `${account_number.substring(1, 4)}-${account_number.substring(5,8)}-00${account_number.substring(8)}-15`;
+                account["account_number_format"] = `${account_number.substring(0, 4)}-${account_number.substring(4,8)}-${account_number.substring(8)}`;
+                account["account_type"] = `CUENTA AHORRO`;
+
+                return account;
             });
     }
 
